@@ -1,29 +1,50 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 
-function Cat({kinds, picture}) {
+function Music({track, artist, album, picture, plays}) {
     return (
         <div>
-            <h2>I love {kinds}.</h2>
-            <img src={picture} alt={kinds}/>
+            <h2>{track}</h2>
+            <h4>Artist: {artist}</h4>
+            <h4>Album: {album}</h4>
+            <h4>This song was played {plays} times on Spotify.</h4>
+            <img src={picture} alt={track}/>
         </div>
     )
 }
 
-const catILove = [
+Music.propTypes = {
+    track: PropTypes.string.isRequired,
+    artist: PropTypes.string.isRequired,
+    album: PropTypes.string.isRequired,
+    picture: PropTypes.string.isRequired,
+    plays: PropTypes.number.isRequired
+}
+
+const musicILove = [
     {
         id: 1,
-        kinds: "American Shorthair",
-        picture: "https://www.thesprucepets.com/thmb/QVUzJyAhwdxLpP8fAfzjX1Aus_0=/960x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-925319984-36b97d913d934d229d8b0d528a7da64e.jpg"
+        track: "Sahara Love",
+        artist: "Above & Beyond",
+        album: "Common Ground",
+        picture: "https://img.discogs.com/dk9xCftpIiVWTIse8o8mIKjqeyY=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11494464-1518129905-7041.jpeg.jpg",
+        plays: 2127627
     },
     {
         id: 2,
-        kinds: "Munchkin",
-        picture: "https://www.thesprucepets.com/thmb/uu7O05OIOe1jfe9pDvHdIiOteFk=/960x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/munchkin-cat-relaxing-in-the-garden-johannesburg-667587109-57d9bb0f5f9b5865168d616a.jpg"
+        track: "Mr Fear",
+        artist: "SIAMÉS",
+        album: "Bounce Into The Music",
+        picture: "https://img.discogs.com/bWSPamIKRZyccr4rTrkegtmSKds=/fit-in/500x500/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-13506702-1560705343-8159.jpeg.jpg",
+        plays: 8796854
     },
     {
         id: 3,
-        kinds: "Russian Blue",
-        picture: "https://www.thesprucepets.com/thmb/WlQeWMTYIRhhABWIsX915b2kg1o=/960x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/cute-russian-blue-cat-sitting-on-the-bed--female-cat--498731394-5c2a695746e0fb00015354ac.jpg"
+        track: "Will We Remain?",
+        artist: "Ilan Bluestone",
+        album: "Scars",
+        picture: "https://img.discogs.com/xVKM5d4PxDve4eA9dLx8TAExvwE=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11922647-1524817669-1306.jpeg.jpg",
+        plays: 1186403
     }
 ];
 
@@ -31,8 +52,9 @@ const catILove = [
 function App() {
     return (
         <div className="App">
-            {catILove.map(one => (
-                <Cat key={one.id} kinds={one.kinds} image={one.picture}/>
+            {musicILove.map(one => (
+                <Music key={one.id} track={one.track} artist={one.artist} album={one.album} picture={one.picture}
+                       plays={one.plays}/>
             ))}
         </div>
     );
