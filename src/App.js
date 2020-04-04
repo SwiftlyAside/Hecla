@@ -21,6 +21,30 @@ Music.propTypes = {
     plays: PropTypes.number.isRequired
 }
 
+class App extends React.Component {
+    state = {
+        plays: 1238052
+    };
+
+    add = () => {
+        const {plays} = this.state;
+        this.setState({
+            plays: plays + 1
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                <h1>This song was played {this.state.plays} times on Spotify.</h1>
+                <button onClick={this.add}>Play</button>
+                <button>Pause</button>
+            </div>
+        );
+    }
+}
+
+/*
 const musicILove = [
     {
         id: 1,
@@ -47,17 +71,6 @@ const musicILove = [
         plays: 1186403
     }
 ];
-
-
-function App() {
-    return (
-        <div className="App">
-            {musicILove.map(one => (
-                <Music key={one.id} track={one.track} artist={one.artist} album={one.album} picture={one.picture}
-                       plays={one.plays}/>
-            ))}
-        </div>
-    );
-}
+*/
 
 export default App;
