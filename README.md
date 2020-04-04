@@ -1,5 +1,5 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## smovie
+## Hecla
 
-Go your home and just watch movie!
+Go your home and just listen music!
