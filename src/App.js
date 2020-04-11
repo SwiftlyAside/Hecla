@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 /*
 function Music({track, artist, album, picture, plays}) {
@@ -24,11 +25,30 @@ Music.propTypes = {
 
 class App extends React.Component {
     state = {
-        plays: 1238052
+        plays: 1238052,
+        isLoading: true,
+        musics: []
     };
 
     add = () => {
         this.setState(current => ({plays: current.plays + 1}));
+    }
+
+    //
+    getMusics = async () => {
+        const musics = await axios({
+            url: 'https://api.spotify.com/v1/users/siderilust/playlists?limit=10&offset=5',
+            method: 'get',
+            headers: {
+                "Accept": 'application/json',
+                "Content-Type": 'application/json',
+                "Authorization": "Bearer BQDrRK5sf3AQyWc6EjpeBuKkXF2tvJRxI15si0FYThpYSAcgGTL_ZbP1XK6cqTy3wAWcV9jBrdFyyUG4fvl5_nogSoXeba7wdegQN-qnXaqLrAokjAhGTAw0C_A8ElSNrkJL4hnNoVLSfEQ",
+            }
+        });
+    }
+
+    componentDidMount() {
+        this.getMusics();
     }
 
     render() {
