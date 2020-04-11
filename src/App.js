@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types'
 
+/*
 function Music({track, artist, album, picture, plays}) {
     return (
         <div>
@@ -20,6 +20,7 @@ Music.propTypes = {
     picture: PropTypes.string.isRequired,
     plays: PropTypes.number.isRequired
 }
+*/
 
 class App extends React.Component {
     state = {
@@ -27,10 +28,7 @@ class App extends React.Component {
     };
 
     add = () => {
-        const {plays} = this.state;
-        this.setState({
-            plays: plays + 1
-        });
+        this.setState(current => ({plays: current.plays + 1}));
     }
 
     render() {
