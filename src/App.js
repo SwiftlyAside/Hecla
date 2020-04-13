@@ -1,5 +1,5 @@
-import React from 'react';
-import axios from 'axios';
+import React from 'react'
+import axios from 'axios'
 
 /*
 function Music({track, artist, album, picture, plays}) {
@@ -25,25 +25,50 @@ Music.propTypes = {
 
 class App extends React.Component {
     state = {
-        plays: 1238052,
+        plays: 123805,
         isLoading: true,
-        musics: []
+        musics: [],
     };
 
     add = () => {
         this.setState(current => ({plays: current.plays + 1}));
     }
 
-    //
+    // 'https://api.spotify.com/v1/users/{user_id}/playlists?limit={limit}&offset={offset}'
     getMusics = async () => {
-        const musics = await axios({
+        const client_id = 'dfdf35eef5d146278f21b11e31b07320'
+        const client_secret = '88d73d703a01425287796c10e89af5ae'
+
+        const musics = await axios.post(
+          'https://accounts.spotify.com/api/token', {
+              Authorization: `Basic ${new Buffer(
+                client_id + ':' + client_secret).toString('base64')}`,
+              form: {
+                  grant_type: 'client_credentials',
+              },
+              json: true,
+          }).then((body) => {
+              var token = body.access_token
+
+              axios.get(
+                'https://api.spotify.com/v1/users/siderilust/playlists?limit=10&offset=5',
+                {})
+          },
+        )
+
+        const musics1 = await axios({
             url: 'https://api.spotify.com/v1/users/siderilust/playlists?limit=10&offset=5',
             method: 'get',
             headers: {
-                "Accept": 'application/json',
-                "Content-Type": 'application/json',
-                "Authorization": "Bearer BQDrRK5sf3AQyWc6EjpeBuKkXF2tvJRxI15si0FYThpYSAcgGTL_ZbP1XK6cqTy3wAWcV9jBrdFyyUG4fvl5_nogSoXeba7wdegQN-qnXaqLrAokjAhGTAw0C_A8ElSNrkJL4hnNoVLSfEQ",
-            }
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+
+                // User implicit OAuth
+                // "Authorization": "Bearer BQDrRK5sf3AQyWc6EjpeBuKkXF2tvJRxI15si0FYThpYSAcgGTL_ZbP1XK6cqTy3wAWcV9jBrdFyyUG4fvl5_nogSoXeba7wdegQN-qnXaqLrAokjAhGTAw0C_A8ElSNrkJL4hnNoVLSfEQ",
+
+                // App Credential Auth, Client ID + Client Secret (base64)
+                'Authorization': 'Basic ZGZkZjM1ZWVmNWQxNDYyNzhmMjFiMTFlMzFiMDczMjA6ODhkNzNkNzAzYTAxNDI1Mjg3Nzk2YzEwZTg5YWY1YWU=',
+            },
         });
     }
 
@@ -61,34 +86,5 @@ class App extends React.Component {
         );
     }
 }
-
-/*
-const musicILove = [
-    {
-        id: 1,
-        track: "Sahara Love",
-        artist: "Above & Beyond",
-        album: "Common Ground",
-        picture: "https://img.discogs.com/dk9xCftpIiVWTIse8o8mIKjqeyY=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11494464-1518129905-7041.jpeg.jpg",
-        plays: 2127627
-    },
-    {
-        id: 2,
-        track: "Mr Fear",
-        artist: "SIAMÉS",
-        album: "Bounce Into The Music",
-        picture: "https://img.discogs.com/bWSPamIKRZyccr4rTrkegtmSKds=/fit-in/500x500/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-13506702-1560705343-8159.jpeg.jpg",
-        plays: 8796854
-    },
-    {
-        id: 3,
-        track: "Will We Remain?",
-        artist: "Ilan Bluestone",
-        album: "Scars",
-        picture: "https://img.discogs.com/xVKM5d4PxDve4eA9dLx8TAExvwE=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11922647-1524817669-1306.jpeg.jpg",
-        plays: 1186403
-    }
-];
-*/
 
 export default App;
