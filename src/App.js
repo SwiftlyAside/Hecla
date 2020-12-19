@@ -1,90 +1,77 @@
-import React from 'react'
-import axios from 'axios'
+import React from 'react';
+import SearchBar from './components/SearchBar';
+import spotify from './api/spotify';
+import MusicList from './components/MusicList';
 
-/*
-function Music({track, artist, album, picture, plays}) {
-    return (
-        <div>
-            <h2>{track}</h2>
-            <h4>Artist: {artist}</h4>
-            <h4>Album: {album}</h4>
-            <h4>This song was played {plays} times on Spotify.</h4>
-            <img src={picture} alt={track}/>
-        </div>
-    )
-}
-
-Music.propTypes = {
-    track: PropTypes.string.isRequired,
-    artist: PropTypes.string.isRequired,
-    album: PropTypes.string.isRequired,
-    picture: PropTypes.string.isRequired,
-    plays: PropTypes.number.isRequired
-}
-*/
+const querystring = require('querystring');
 
 class App extends React.Component {
-    state = {
-        plays: 123805,
-        isLoading: true,
-        musics: [],
+  constructor() {
+    super();
+    this.state = {
+      tracks: [],
+      albums: [],
+      artists: [],
     };
+  }
 
-    add = () => {
-        this.setState(current => ({plays: current.plays + 1}));
-    }
+  onTermSubmit = async term => {
+    const clientId = 'dfdf35eef5d146278f21b11e31b07320';
+    const clientSecret = '2f1794f08c3440009dec13900a00b031';
+    const authorization = `Basic ${Buffer.from(
+      `${clientId}:${clientSecret}`,
+    ).toString('base64')}`;
 
-    // 'https://api.spotify.com/v1/users/{user_id}/playlists?limit={limit}&offset={offset}'
-    getMusics = async () => {
-        const client_id = 'dfdf35eef5d146278f21b11e31b07320'
-        const client_secret = '88d73d703a01425287796c10e89af5ae'
-
-        const musics = await axios.post(
-          'https://accounts.spotify.com/api/token', {
-              Authorization: `Basic ${new Buffer(
-                client_id + ':' + client_secret).toString('base64')}`,
-              form: {
-                  grant_type: 'client_credentials',
-              },
-              json: true,
-          }).then((body) => {
-              var token = body.access_token
-
-              axios.get(
-                'https://api.spotify.com/v1/users/siderilust/playlists?limit=10&offset=5',
-                {})
+    await spotify
+      .post(
+        'https://accounts.spotify.com/api/token',
+        querystring.stringify({ grant_type: 'client_credentials' }),
+        {
+          headers: {
+            Authorization: authorization,
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
-        )
-
-        const musics1 = await axios({
-            url: 'https://api.spotify.com/v1/users/siderilust/playlists?limit=10&offset=5',
-            method: 'get',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-
-                // User implicit OAuth
-                // "Authorization": "Bearer BQDrRK5sf3AQyWc6EjpeBuKkXF2tvJRxI15si0FYThpYSAcgGTL_ZbP1XK6cqTy3wAWcV9jBrdFyyUG4fvl5_nogSoXeba7wdegQN-qnXaqLrAokjAhGTAw0C_A8ElSNrkJL4hnNoVLSfEQ",
-
-                // App Credential Auth, Client ID + Client Secret (base64)
-                'Authorization': 'Basic ZGZkZjM1ZWVmNWQxNDYyNzhmMjFiMTFlMzFiMDczMjA6ODhkNzNkNzAzYTAxNDI1Mjg3Nzk2YzEwZTg5YWY1YWU=',
+        },
+      )
+      .then(authResponse => {
+        spotify
+          .get('/search', {
+            params: {
+              q: term,
             },
-        });
-    }
+            headers: {
+              Authorization: `Bearer ${authResponse.data.access_token}`,
+            },
+          })
+          .then(queryResponse => {
+            console.log(queryResponse.data);
+            this.setState({
+              tracks: queryResponse.data.tracks.items,
+              albums: queryResponse.data.albums.items,
+              artists: queryResponse.data.artists.items,
+            });
+          });
+      });
+  };
 
-    componentDidMount() {
-        this.getMusics();
-    }
-
-    render() {
-        return (
-            <div>
-                <h1>This song was played {this.state.plays} times on Spotify.</h1>
-                <button onClick={this.add}>Play</button>
-                <button>Pause</button>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <div className="ui container">
+          <SearchBar onFormSubmit={this.onTermSubmit} />
+          <MusicList musics={this.state.tracks} />
+          <h1>
+            {this.state.tracks.length}
+            &nbsp;Tracks.&nbsp;
+            {this.state.albums.length}
+            &nbsp;Albums.&nbsp;
+            {this.state.artists.length}
+            &nbsp;Artists.&nbsp;
+          </h1>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
