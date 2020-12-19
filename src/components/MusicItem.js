@@ -1,9 +1,10 @@
 import './MusicItem.css';
 import React from 'react';
 
-const MusicItem = ({ music }) => {
+const MusicItem = ({ music, onMusicSelect }) => {
   return (
-    <div className="music-item item">
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
+    <div onClick={() => onMusicSelect(music)} className="music-item item">
       <img
         className="ui image"
         src={music.album.images[1].url}
