@@ -15,9 +15,30 @@ class App extends React.Component {
       tracks: [],
       albums: [],
       artists: [],
+      clientId: 'dfdf35eef5d146278f21b11e31b07320',
+      clientSecret: '2f1794f08c3440009dec13900a00b031',
       token: null,
     };
   }
+
+  onLoginClicked = () => {
+    const state = Math.random().toString(36).substr(2, 11);
+    // eslint-disable-next-line no-unused-vars
+    const authorization = `Basic ${Buffer.from(
+      `${this.state.clientId}:${this.state.clientSecret}`,
+    ).toString('base64')}`;
+    spotify.get('https://accounts.spotify.com/authorize', {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
+      params: {
+        client_id: this.state.clientId,
+        response_type: 'code',
+        redirect_uri: 'http://localhost:3000',
+        state,
+      },
+    });
+  };
 
   onTermSubmit = async term => {
     const clientId = 'dfdf35eef5d146278f21b11e31b07320';
@@ -29,7 +50,7 @@ class App extends React.Component {
     await spotify
       .post(
         'https://accounts.spotify.com/api/token',
-        querystring.stringify({ grant_type: 'client_credentials' }),
+        querystring.stringify({ grant_type: 'authorization_code' }),
         {
           headers: {
             Authorization: authorization,
@@ -43,6 +64,7 @@ class App extends React.Component {
           .get('/search', {
             params: {
               q: term,
+              type: 'album,artist,track',
             },
             headers: {
               Authorization: this.state.token,
@@ -63,7 +85,9 @@ class App extends React.Component {
     this.setState({ selectedMusic: music });
     spotify.put(
       '/me/player/play',
-      {},
+      {
+        context_uri: music.uri,
+      },
       {
         headers: {
           Authorization: this.state.token,
@@ -76,6 +100,13 @@ class App extends React.Component {
     return (
       <div>
         <div className="ui container">
+          <button
+            type="button"
+            onClick={this.onLoginClicked}
+            className="ui button"
+          >
+            Login/Logout
+          </button>
           <SearchBar onFormSubmit={this.onTermSubmit} />
           <MusicDetail music={this.state.selectedMusic} />
           <MusicList
