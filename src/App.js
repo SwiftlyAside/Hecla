@@ -4,13 +4,13 @@ import spotify from './api/spotify';
 import MusicList from './components/MusicList';
 import MusicDetail from './components/MusicDetail';
 
+const proxyurl = 'https://cors-anywhere.herokuapp.com/';
 const querystring = require('querystring');
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      // eslint-disable-next-line react/no-unused-state
       selectedMusic: null,
       tracks: [],
       albums: [],
@@ -21,16 +21,17 @@ class App extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.onTermSubmit('Coldplay');
+  }
+
   onLoginClicked = () => {
     const state = Math.random().toString(36).substr(2, 11);
     // eslint-disable-next-line no-unused-vars
     const authorization = `Basic ${Buffer.from(
       `${this.state.clientId}:${this.state.clientSecret}`,
     ).toString('base64')}`;
-    spotify.get('https://accounts.spotify.com/authorize', {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
+    spotify.get(`${proxyurl}https://accounts.spotify.com/authorize`, {
       params: {
         client_id: this.state.clientId,
         response_type: 'code',
@@ -50,7 +51,7 @@ class App extends React.Component {
     await spotify
       .post(
         'https://accounts.spotify.com/api/token',
-        querystring.stringify({ grant_type: 'authorization_code' }),
+        querystring.stringify({ grant_type: 'client_credentials' }),
         {
           headers: {
             Authorization: authorization,
@@ -76,6 +77,7 @@ class App extends React.Component {
               tracks: queryResponse.data.tracks.items,
               albums: queryResponse.data.albums.items,
               artists: queryResponse.data.artists.items,
+              selectedMusic: queryResponse.data.tracks.items[0],
             });
           });
       });
@@ -108,11 +110,19 @@ class App extends React.Component {
             Login/Logout
           </button>
           <SearchBar onFormSubmit={this.onTermSubmit} />
-          <MusicDetail music={this.state.selectedMusic} />
-          <MusicList
-            onMusicSelect={this.onMusicSelect}
-            musics={this.state.tracks}
-          />
+          <div className="ui grid">
+            <div className="ui row">
+              <div className="eleven wide column">
+                <MusicDetail music={this.state.selectedMusic} />
+              </div>
+              <div className="five wide column">
+                <MusicList
+                  onMusicSelect={this.onMusicSelect}
+                  musics={this.state.tracks}
+                />
+              </div>
+            </div>
+          </div>
           <h3>
             {this.state.tracks.length}
             &nbsp;Tracks.&nbsp;

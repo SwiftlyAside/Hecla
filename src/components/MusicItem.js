@@ -7,7 +7,7 @@ const MusicItem = ({ music, onMusicSelect }) => {
     <div onClick={() => onMusicSelect(music)} className="music-item item">
       <img
         className="ui image"
-        src={music.album.images[1].url}
+        src={music.album.images[2].url}
         alt={music.name}
       />
       <div className="content">
