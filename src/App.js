@@ -1,49 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from './components/SearchBar';
 import spotify from './api/spotify';
 import MusicList from './components/MusicList';
 import MusicDetail from './components/MusicDetail';
 
-const proxyurl = 'https://cors-anywhere.herokuapp.com/';
 const querystring = require('querystring');
 
-class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      selectedMusic: null,
-      tracks: [],
-      albums: [],
-      artists: [],
-      clientId: 'dfdf35eef5d146278f21b11e31b07320',
-      clientSecret: '2f1794f08c3440009dec13900a00b031',
-      token: null,
-    };
-  }
+const App = () => {
+  const clientId = 'dfdf35eef5d146278f21b11e31b07320';
+  const clientSecret = '2f1794f08c3440009dec13900a00b031';
 
-  componentDidMount() {
-    this.onTermSubmit('Coldplay');
-  }
+  // eslint-disable-next-line no-unused-vars
+  const [code, setCode] = useState(null);
+  const [tracks, setTracks] = useState([]);
+  const [albums, setAlbums] = useState([]);
+  const [artists, setArtists] = useState([]);
+  const [selectedMusic, setSelectedMusic] = useState(null);
+  const [token, setToken] = useState(null);
 
-  onLoginClicked = () => {
+  const onLoginClicked = () => {
     const state = Math.random().toString(36).substr(2, 11);
     // eslint-disable-next-line no-unused-vars
     const authorization = `Basic ${Buffer.from(
-      `${this.state.clientId}:${this.state.clientSecret}`,
+      `${clientId}:${clientSecret}`,
     ).toString('base64')}`;
-    spotify.get(`${proxyurl}https://accounts.spotify.com/authorize`, {
-      params: {
-        client_id: this.state.clientId,
-        response_type: 'code',
-        redirect_uri: 'http://localhost:3000',
-        state,
-      },
-    });
+    window.location.replace(
+      `https://accounts.spotify.com/authorize?client_id=dfdf35eef5d146278f21b11e31b07320&response_type=code&redirect_uri=http:%2F%2Flocalhost:3000&state=${state}`,
+    );
   };
 
-  onTermSubmit = async term => {
-    const clientId = 'dfdf35eef5d146278f21b11e31b07320';
-    const clientSecret = '2f1794f08c3440009dec13900a00b031';
+  const onTermSubmit = async term => {
     const authorization = `Basic ${Buffer.from(
       `${clientId}:${clientSecret}`,
     ).toString('base64')}`;
@@ -60,7 +46,7 @@ class App extends React.Component {
         },
       )
       .then(authResponse => {
-        this.setState({ token: `Bearer ${authResponse.data.access_token}` });
+        setToken(`Bearer ${authResponse.data.access_token}`);
         spotify
           .get('/search', {
             params: {
@@ -68,23 +54,21 @@ class App extends React.Component {
               type: 'album,artist,track',
             },
             headers: {
-              Authorization: this.state.token,
+              Authorization: token,
             },
           })
           .then(queryResponse => {
             console.log(queryResponse.data);
-            this.setState({
-              tracks: queryResponse.data.tracks.items,
-              albums: queryResponse.data.albums.items,
-              artists: queryResponse.data.artists.items,
-              selectedMusic: queryResponse.data.tracks.items[0],
-            });
+            setTracks(queryResponse.data.tracks.items);
+            setAlbums(queryResponse.data.albums.items);
+            setArtists(queryResponse.data.artists.items);
+            setSelectedMusic(queryResponse.data.tracks.items[0]);
           });
       });
   };
 
-  onMusicSelect = music => {
-    this.setState({ selectedMusic: music });
+  const onMusicSelect = music => {
+    setSelectedMusic(music);
     spotify.put(
       '/me/player/play',
       {
@@ -92,49 +76,50 @@ class App extends React.Component {
       },
       {
         headers: {
-          Authorization: this.state.token,
+          Authorization: token,
         },
       },
     );
   };
 
-  render() {
-    return (
-      <div>
-        <div className="ui container">
-          <button
-            type="button"
-            onClick={this.onLoginClicked}
-            className="ui button"
-          >
-            Login/Logout
-          </button>
-          <SearchBar onFormSubmit={this.onTermSubmit} />
-          <div className="ui grid">
-            <div className="ui row">
-              <div className="eleven wide column">
-                <MusicDetail music={this.state.selectedMusic} />
-              </div>
-              <div className="five wide column">
-                <MusicList
-                  onMusicSelect={this.onMusicSelect}
-                  musics={this.state.tracks}
-                />
-              </div>
+  useEffect(() => {
+    /*    // eslint-disable-next-line react/no-this-in-sfc
+    const search = this.props.location;
+    if (search !== undefined) {
+      const params = new URLSearchParams(search);
+      setCode(params.get('code'));
+    } */
+    onTermSubmit('Coldplay');
+  }, []);
+
+  return (
+    <div>
+      <div className="ui container">
+        <button type="button" onClick={onLoginClicked} className="ui button">
+          Login/Logout
+        </button>
+        <SearchBar onFormSubmit={onTermSubmit} />
+        <div className="ui grid">
+          <div className="ui row">
+            <div className="eleven wide column">
+              <MusicDetail music={selectedMusic} />
+            </div>
+            <div className="five wide column">
+              <MusicList onMusicSelect={onMusicSelect} musics={tracks} />
             </div>
           </div>
-          <h3>
-            {this.state.tracks.length}
-            &nbsp;Tracks.&nbsp;
-            {this.state.albums.length}
-            &nbsp;Albums.&nbsp;
-            {this.state.artists.length}
-            &nbsp;Artists.&nbsp;
-          </h3>
         </div>
+        <h3>
+          {tracks.length}
+          &nbsp;Tracks.&nbsp;
+          {albums.length}
+          &nbsp;Albums.&nbsp;
+          {artists.length}
+          &nbsp;Artists.&nbsp;
+        </h3>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default App;
