@@ -20,10 +20,6 @@ const App = () => {
 
   const onLoginClicked = () => {
     const state = Math.random().toString(36).substr(2, 11);
-    // eslint-disable-next-line no-unused-vars
-    const authorization = `Basic ${Buffer.from(
-      `${clientId}:${clientSecret}`,
-    ).toString('base64')}`;
     window.location.replace(
       `https://accounts.spotify.com/authorize?client_id=dfdf35eef5d146278f21b11e31b07320&response_type=code&redirect_uri=http:%2F%2Flocalhost:3000&state=${state}`,
     );
