@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Label, Segment } from "semantic-ui-react";
+import { Form } from "semantic-ui-react";
 
 interface searchBarProps {
   onFormSubmit: (term: string) => void;
