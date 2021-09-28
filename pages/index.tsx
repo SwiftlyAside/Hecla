@@ -19,8 +19,8 @@ const Home: NextPage = () => {
       <Menu fixed="top">
         <Container>
           <Menu.Item as="a" header>
-            <Image size="mini" src="/favicon.ico" style={{ marginRight: "1.5em" }} />
-            Yes
+            <Image size="mini" src="/favicon.ico" alt="logo" style={{ marginRight: "1.5em" }} />
+            Hecla
           </Menu.Item>
           <Menu.Item>
             <SearchBar onFormSubmit={search} />
@@ -31,7 +31,7 @@ const Home: NextPage = () => {
         </Container>
       </Menu>
       <Container style={{ marginTop: "7em" }}>
-        <div>dasdad</div>
+        <div>Empty</div>
       </Container>
     </div>
   );
