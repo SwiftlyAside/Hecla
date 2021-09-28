@@ -1,9 +1,0 @@
-.music-item {
-  display: flex !important;
-  align-items: center !important;
-  cursor: pointer;
-}
-
-.music-item.item img {
-  max-width: 100px;
-}

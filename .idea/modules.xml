@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/hecla-react.iml" filepath="$PROJECT_DIR$/.idea/hecla-react.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Hecla.iml" filepath="$PROJECT_DIR$/.idea/Hecla.iml" />
     </modules>
   </component>
 </project>
