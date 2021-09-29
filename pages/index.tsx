@@ -73,7 +73,7 @@ const Home: NextPage = () => {
           {LoginButton()}
         </Container>
       </Menu>
-      <Grid className="hecla-container" container columns={2} divided>
+      <Grid className="hecla-container" container stackable columns={2} divided>
         <Grid.Row>
           <Grid.Column width={11}>
             <MusicDetail music={selectedMusic} />
