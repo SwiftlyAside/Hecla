@@ -1,29 +1,15 @@
-import React, { useState } from "react";
-import { Form } from "semantic-ui-react";
+import React from "react";
 
 interface searchBarProps {
-  onFormSubmit: (term: string) => void;
+  term: string;
+  onChange: (event: any) => void;
 }
 
-const SearchBar: React.FC<searchBarProps> = ({ onFormSubmit }) => {
-  const [term, setTerm] = useState("");
-
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    onFormSubmit(term);
-  };
-
+const SearchBar: React.FC<searchBarProps> = ({ term, onChange }) => {
   return (
-    <Form onSubmit={onSubmit}>
-      <Form.Field>
-        <input
-          type="text"
-          placeholder="Music Search"
-          value={term}
-          onChange={(event) => setTerm(event.target.value)}
-        />
-      </Form.Field>
-    </Form>
+    <div className="ui transparent input">
+      <input type="text" placeholder="Music Search" value={term} onChange={onChange} />
+    </div>
   );
 };
 

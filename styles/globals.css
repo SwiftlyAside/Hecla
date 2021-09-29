@@ -11,6 +11,22 @@ a {
   text-decoration: none;
 }
 
-* {
-  box-sizing: border-box;
+.hecla-container {
+  margin-top: 3em !important;
+}
+
+.hecla-list {
+  height: 75vh !important;
+  overflow: scroll !important;
+  overflow-x: hidden !important;
+}
+
+.music-item {
+  display: flex !important;
+  align-items: center !important;
+  cursor: pointer;
+}
+
+.music-item.item img {
+  max-width: 100px;
 }
