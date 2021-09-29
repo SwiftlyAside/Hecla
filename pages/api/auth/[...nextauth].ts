@@ -52,12 +52,18 @@ export default NextAuth({
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+      authorization: {
+        params: {
+          scope: "user-read-email app-remote-control streaming",
+        },
+      },
     }),
   ],
   callbacks: {
     async jwt({ token, account }) {
       // Persist the OAuth access_token to the token right after signin
       if (account) {
+        console.log(account.scope);
         return {
           accessToken: account.access_token,
           accessTokenExpires: account.expires_at,

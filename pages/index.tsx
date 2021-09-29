@@ -22,6 +22,12 @@ const Home: NextPage = () => {
 
   const onMusicSelect = (music: any) => {
     setSelectedMusic(music);
+    fetch("https://api.spotify.com/v1/me/player/play", {
+      method: "put",
+      headers: {
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+    });
     // fetcher("https://api.spotify.com/v1/me/player/play", session, "put");
   };
 
