@@ -27,8 +27,10 @@ const Home: NextPage = () => {
       headers: {
         Authorization: `Bearer ${session?.accessToken}`,
       },
+      body: JSON.stringify({
+        uris: [music.uri],
+      }),
     });
-    // fetcher("https://api.spotify.com/v1/me/player/play", session, "put");
   };
 
   const LoginButton = () => {

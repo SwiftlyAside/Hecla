@@ -15,18 +15,36 @@ a {
   margin-top: 3em !important;
 }
 
-.hecla-list {
-  height: 75vh !important;
+.hecla-segment {
+  height: 500px !important;
+}
+
+.hecla-segment .list {
+  height: 100% !important;
   overflow: scroll !important;
   overflow-x: hidden !important;
+  overflow-y: auto !important;
 }
 
 .music-item {
+  width: 100%;
   display: flex !important;
   align-items: center !important;
   cursor: pointer;
 }
 
 .music-item.item img {
-  max-width: 100px;
+  max-width: 64px;
+  max-height: 64px;
+}
+
+.music-item.item .content {
+  width: 75% !important;
+}
+
+.music-item.item .content .header {
+  width: 95% !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Image, ItemContent, List } from "semantic-ui-react";
+import { Header, Image, ItemContent, List, Segment } from "semantic-ui-react";
 import MusicItem from "./MusicItem";
 
 interface MusicListProps {
@@ -13,22 +13,26 @@ const MusicList: React.FC<MusicListProps> = ({ onMusicSelect, musics }) => {
   });
   if (musics) {
     return (
-      <List className="hecla-list" relaxed divided>
-        {renderedList}
-      </List>
+      <Segment padded className="hecla-segment">
+        <List className="hecla-list" relaxed divided>
+          {renderedList}
+        </List>
+      </Segment>
     );
   } else {
     return (
-      <List className="hecla-list" relaxed divided>
-        {
-          <List.Item className="music-item">
-            <Image src="/favicon.ico" alt="nothing" rounded />
-            <ItemContent>
-              <Header>No results</Header>
-            </ItemContent>
-          </List.Item>
-        }
-      </List>
+      <Segment padded className="hecla-segment">
+        <List className="hecla-list" relaxed divided>
+          {
+            <List.Item className="music-item">
+              <Image src="/favicon.ico" alt="nothing" rounded />
+              <ItemContent>
+                <Header>No results</Header>
+              </ItemContent>
+            </List.Item>
+          }
+        </List>
+      </Segment>
     );
   }
 };

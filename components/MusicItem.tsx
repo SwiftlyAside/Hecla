@@ -11,7 +11,10 @@ const MusicItem: React.FC<MusicItemProps> = ({ music, onMusicSelect }) => {
     <List.Item className="music-item" onClick={() => onMusicSelect(music)}>
       <Image src={music.album.images[2].url} alt={music.name} rounded />
       <ItemContent>
-        <Header>{music.name}</Header>
+        <Header size="small">{music.name}</Header>
+        <Header color="grey" size="tiny">
+          {music.artists[0].name} · {music.album.name}
+        </Header>
       </ItemContent>
     </List.Item>
   );

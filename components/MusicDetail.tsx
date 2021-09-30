@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Image, Segment } from "semantic-ui-react";
+import { Divider, Header, Image, Segment } from "semantic-ui-react";
 
 interface MusicDetailProps {
   music: any | undefined;
@@ -10,20 +10,20 @@ const MusicDetail: React.FC<MusicDetailProps> = ({ music }) => {
     return `By ${artist.name}${index < music.artists.length - 1 ? ", " : ""}`;
   });
   return (
-    <>
-      <Segment style={{ height: "350px" }}>
-        <Image
-          src={music ? music.album.images[1].url : "/favicon.ico"}
-          alt={music ? music.name : "Default"}
-          centered
-          rounded
-        />
-      </Segment>
-      <Segment textAlign="center">
-        <Header size="large">{music ? music.name : "Not playing!"}</Header>
-        <Header>{music ? renderedArtists : "Not playing!"}</Header>
-      </Segment>
-    </>
+    <Segment padded className="hecla-segment">
+      <Image
+        size="medium"
+        src={music ? music.album.images[1].url : "/favicon.ico"}
+        alt={music ? music.name : "Default"}
+        centered
+        rounded
+      />
+      <Divider section />
+      <Header size="large" textAlign="center">
+        {music ? music.name : "Not playing!"}
+      </Header>
+      <Header textAlign="center">{music ? renderedArtists : "Not playing!"}</Header>
+    </Segment>
   );
 };
 
