@@ -1,10 +1,13 @@
-import { Session } from "next-auth";
-
-const fetcher = async (input: string, session: Session | null, method: string, ...args: any[]) => {
+const fetcher = async (
+  input: string,
+  accessToken: string | null,
+  method: string,
+  ...args: any[]
+) => {
   const result = await fetch(input, {
     method: method,
     headers: {
-      Authorization: `Bearer ${session?.accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return result.json();
