@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
-import { toBase64 } from "next/dist/shared/lib/to-base-64";
 import * as querystring from "querystring";
 import { JWT } from "next-auth/jwt";
 
@@ -20,9 +19,9 @@ async function refreshAccessToken(token: JWT) {
       method: "post",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: `Basic ${toBase64(
+        Authorization: `Basic ${Buffer.from(
           `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`,
-        )}`,
+        ).toString("base64")}`,
       },
       body: querystring.stringify({
         grant_type: "refresh_token",
@@ -50,16 +49,16 @@ async function refreshAccessToken(token: JWT) {
 export default NextAuth({
   providers: [
     SpotifyProvider({
-      clientId: process.env.SPOTIFY_CLIENT_ID,
-      clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+      clientId: process.env.SPOTIFY_CLIENT_ID || "",
+      clientSecret: process.env.SPOTIFY_CLIENT_SECRET || "",
       authorization:
         "https://accounts.spotify.com/authorize?scope=user-read-email%20app-remote-control%20streaming",
     }),
   ],
   secret: process.env.SECRET,
-  jwt: {
-    signingKey: process.env.JWT_SIGNING_PRIVATE_KEY,
-  },
+  // jwt: {
+  //   signingKey: process.env.JWT_SIGNING_PRIVATE_KEY,
+  // },
   callbacks: {
     async jwt({ token, account }) {
       // Persist the OAuth access_token to the token right after signin

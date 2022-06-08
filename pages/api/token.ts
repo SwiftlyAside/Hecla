@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { toBase64 } from "next/dist/shared/lib/to-base-64";
 import querystring from "querystring";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -8,9 +7,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     method: "post",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Basic ${toBase64(
+      Authorization: `Basic ${Buffer.from(
         `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`,
-      )}`,
+      ).toString("base64")}`,
     },
     body: querystring.stringify({
       grant_type: "client_credentials",
