@@ -1,30 +1,65 @@
-import React from "react";
-import { Divider, Header, Image, Segment } from "semantic-ui-react";
+import React from 'react'
+import { Header } from 'semantic-ui-react'
+import {
+  Box,
+  Center,
+  Divider,
+  Grid,
+  GridItem,
+  Heading,
+  Image,
+  useColorModeValue
+} from '@chakra-ui/react'
+import TrackObjectFull = SpotifyApi.TrackObjectFull
 
 interface MusicDetailProps {
-  music: any | undefined;
+  music: TrackObjectFull | undefined
 }
 
 const MusicDetail: React.FC<MusicDetailProps> = ({ music }) => {
-  const renderedArtists = music?.artists.map((artist: { name: any }, index: number) => {
-    return `By ${artist.name}${index < music.artists.length - 1 ? ", " : ""}`;
-  });
+  const renderedArtists = music?.artists.map(
+    (artist, index: number) =>
+      `By ${artist.name}${index < music.artists.length - 1 ? ', ' : ''}`
+  )
+  const backgroundColor = useColorModeValue('white', 'black')
   return (
-    <Segment padded className="hecla-segment">
-      <Image
-        size="medium"
-        src={music ? music.album.images[1].url : "/favicon.ico"}
-        alt={music ? music.name : "Default"}
-        centered
-        rounded
-      />
-      <Divider section />
-      <Header size="large" textAlign="center">
-        {music ? music.name : "Not playing!"}
-      </Header>
-      <Header textAlign="center">{music ? renderedArtists : "Not playing!"}</Header>
-    </Segment>
-  );
-};
+    <Box minHeight="80vh" borderRadius="lg" backdropBlur={10}>
+      <Grid templateRows={`${music && `7fr`} repeat(2,1fr)`} height="100%">
+        {music && (
+          <GridItem>
+            <Center pt={5}>
+              <Image
+                boxSize="lg"
+                src={music ? music.album.images[1].url : '/favicon.ico'}
+                alt={music ? music.name : 'Default'}
+              />
+            </Center>
+            <Divider
+              backgroundColor={backgroundColor}
+              orientation="horizontal"
+              alignSelf="center"
+              width="98%"
+              my={5}
+            />
+          </GridItem>
+        )}
+        <GridItem>
+          <Center height="100%">
+            <Heading size="lg" textAlign="center">
+              {music ? music.name : 'Not playing!'}
+            </Heading>
+          </Center>
+        </GridItem>
+        <GridItem>
+          <Center height="100%">
+            <Heading size="sm" textAlign="center">
+              {music ? renderedArtists : 'Not playing!'}
+            </Heading>
+          </Center>
+        </GridItem>
+      </Grid>
+    </Box>
+  )
+}
 
-export default MusicDetail;
+export default MusicDetail

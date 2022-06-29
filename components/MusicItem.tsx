@@ -1,9 +1,10 @@
-import React from "react";
-import { Header, Image, ItemContent, List } from "semantic-ui-react";
+import React from 'react'
+import { Header, Image, ItemContent, List } from 'semantic-ui-react'
+import TrackObjectFull = SpotifyApi.TrackObjectFull
 
 interface MusicItemProps {
-  music: any;
-  onMusicSelect: (music: any) => void;
+  music: TrackObjectFull
+  onMusicSelect: (music: TrackObjectFull) => void
 }
 
 const MusicItem: React.FC<MusicItemProps> = ({ music, onMusicSelect }) => {
@@ -17,7 +18,7 @@ const MusicItem: React.FC<MusicItemProps> = ({ music, onMusicSelect }) => {
         </Header>
       </ItemContent>
     </List.Item>
-  );
-};
+  )
+}
 
-export default MusicItem;
+export default MusicItem
