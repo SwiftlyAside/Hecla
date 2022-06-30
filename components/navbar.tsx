@@ -20,6 +20,7 @@ import useDebounce from '../utils/hooks/useDebounce'
 import useSWR from 'swr'
 import fetcher from '../lib/fetch'
 import { GlobalContext } from '../pages/_app'
+import ThemeToggleButton from './theme-toggle-button'
 
 // type LinkItemProps = LinkProps & {
 //   href: string
@@ -145,13 +146,14 @@ const Navbar = ({ ...props }: NavbarProps) => {
               size="lg"
               variant="filled"
               placeholder="Music Search"
-              focusBorderColor="teal.400"
+              focusBorderColor="grassTeal"
               onChange={event => {
                 setSearch(event.target.value)
               }}
             />
           </InputGroup>
           {LoginButton()}
+          <ThemeToggleButton />
         </Stack>
       </Container>
     </Box>

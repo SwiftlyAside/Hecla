@@ -7,6 +7,7 @@ import MusicList from '../components/MusicList'
 import {
   Button,
   Container,
+  Heading,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -15,6 +16,11 @@ import {
   ModalHeader,
   ModalOverlay,
   SimpleGrid,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   useColorModeValue,
   useDisclosure
 } from '@chakra-ui/react'
@@ -68,13 +74,10 @@ const Home: NextPage = () => {
         backgroundColor={useColorModeValue('whiteAlpha.500', 'blackAlpha.500')}
         borderRadius="lg"
       >
-        <SimpleGrid columns={[1, null, 2]} spacing="20px">
-          <MusicDetail music={track} />
-          <MusicList
-            musics={searchResponse?.tracks}
-            onMusicSelect={onMusicSelect}
-          />
-        </SimpleGrid>
+        <MusicList
+          musics={searchResponse?.tracks}
+          onMusicSelect={onMusicSelect}
+        />
       </Container>
     </>
   )

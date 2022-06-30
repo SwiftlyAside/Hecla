@@ -1,5 +1,11 @@
 import React from 'react'
-import { Header, Image, ItemContent, List } from 'semantic-ui-react'
+import {
+  Heading,
+  Image,
+  ListItem,
+  Stack,
+  useColorModeValue
+} from '@chakra-ui/react'
 import TrackObjectFull = SpotifyApi.TrackObjectFull
 
 interface MusicItemProps {
@@ -9,15 +15,21 @@ interface MusicItemProps {
 
 const MusicItem: React.FC<MusicItemProps> = ({ music, onMusicSelect }) => {
   return (
-    <List.Item className="music-item" onClick={() => onMusicSelect(music)}>
-      <Image src={music.album.images[2].url} alt={music.name} rounded />
-      <ItemContent>
-        <Header size="small">{music.name}</Header>
-        <Header color="grey" size="tiny">
+    <ListItem
+      _hover={{ bg: useColorModeValue('blackAlpha.300', 'whiteAlpha.500') }}
+      py={2}
+      borderRadius={10}
+      className="music-item"
+      onClick={() => onMusicSelect(music)}
+    >
+      <Image src={music.album.images[2].url} alt={music.name} px={2} />
+      <Stack direction="column">
+        <Heading size="sm">{music.name}</Heading>
+        <Heading color="grey" size="tiny">
           {music.artists[0].name} · {music.album.name}
-        </Header>
-      </ItemContent>
-    </List.Item>
+        </Heading>
+      </Stack>
+    </ListItem>
   )
 }
 

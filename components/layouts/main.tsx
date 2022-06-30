@@ -32,7 +32,7 @@ const Layout = ({ children, router }: MainLayoutProps) => {
       <Container maxW="container.lg" pt={20}>
         {children}
       </Container>
-      <MiniPlayer track={track} />
+      {track && <MiniPlayer track={track} />}
     </Box>
   )
 }

@@ -16,15 +16,14 @@ type SectionProps = {
   children: React.ReactNode
 }
 
-const Section = ({ children }: SectionProps) => (
+const AnimatedArea = ({ children }: SectionProps) => (
   <StyledDiv
-    initial={{ y: 10, opacity: 0 }}
-    animate={{ y: 0, opacity: 1 }}
-    transition={{ duration: 0.8 }}
-    mb={6}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
   >
     {children}
   </StyledDiv>
 )
 
-export default Section
+export default AnimatedArea

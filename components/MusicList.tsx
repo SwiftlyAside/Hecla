@@ -1,7 +1,16 @@
 import React from 'react'
-import { List } from 'semantic-ui-react'
 import MusicItem from './MusicItem'
-import { Box, Center, Heading } from '@chakra-ui/react'
+import {
+  Box,
+  Center,
+  Heading,
+  List,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs
+} from '@chakra-ui/react'
 import TrackObjectFull = SpotifyApi.TrackObjectFull
 import PagingObject = SpotifyApi.PagingObject
 
@@ -19,9 +28,17 @@ const MusicList: React.FC<MusicListProps> = ({ onMusicSelect, musics }) => {
   if (musics && musics.total !== 0) {
     return (
       <Box py={5} height="80vh" borderRadius="lg" className="hecla-segment">
-        <List className="hecla-list" relaxed divided>
-          {renderedList}
-        </List>
+        <Tabs variant="soft-rounded" height="100%" overflowY="scroll">
+          <TabList>
+            <Tab>Tracks</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <Heading>Tracks</Heading>
+              <List className="hecla-list">{renderedList}</List>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </Box>
     )
   } else {
