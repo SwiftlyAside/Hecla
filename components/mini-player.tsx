@@ -1,7 +1,6 @@
 import TrackObjectFull = SpotifyApi.TrackObjectFull
 import { Box, Image, Stack, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
-import AnimatedArea from './animated-area'
 import { motion } from 'framer-motion'
 
 interface MiniPlayerProps {

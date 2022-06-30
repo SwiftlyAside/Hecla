@@ -16,7 +16,7 @@ type SectionProps = {
   children: React.ReactNode
 }
 
-const AnimatedArea = ({ children }: SectionProps) => (
+const Section = ({ children }: SectionProps) => (
   <StyledDiv
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
@@ -26,4 +26,4 @@ const AnimatedArea = ({ children }: SectionProps) => (
   </StyledDiv>
 )
 
-export default AnimatedArea
+export default Section

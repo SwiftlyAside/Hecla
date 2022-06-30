@@ -1,13 +1,10 @@
 import type { NextPage } from 'next'
-import 'semantic-ui-css/semantic.min.css'
 import { useSession } from 'next-auth/react'
 import React, { useContext } from 'react'
-import MusicDetail from '../components/MusicDetail'
 import MusicList from '../components/MusicList'
 import {
   Button,
   Container,
-  Heading,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -15,21 +12,16 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  SimpleGrid,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
   useColorModeValue,
   useDisclosure
 } from '@chakra-ui/react'
 import { GlobalContext } from './_app'
 import TrackObjectFull = SpotifyApi.TrackObjectFull
+import { motion } from 'framer-motion'
 
 const Home: NextPage = () => {
   const { data: session } = useSession()
-  const { searchResponse, track, setTrack } = useContext(GlobalContext)
+  const { searchResponse, setTrack } = useContext(GlobalContext)
   const { isOpen, onClose, onOpen } = useDisclosure()
 
   const onMusicSelect = (track: TrackObjectFull) => {
@@ -51,8 +43,21 @@ const Home: NextPage = () => {
     })
   }
 
+  const variants = {
+    hidden: { opacity: 0, x: 0, y: 20 },
+    enter: { opacity: 1, x: 0, y: 0 },
+    exit: { opacity: 0, x: -0, y: 20 }
+  }
+
   return (
-    <>
+    <motion.article
+      initial="hidden"
+      animate="enter"
+      exit="exit"
+      variants={variants}
+      transition={{ duration: 0.4, type: 'easeInOut' }}
+      style={{ position: 'relative' }}
+    >
       <Modal isCentered onClose={onClose} isOpen={isOpen}>
         <ModalOverlay
           bg="blackAlpha.300"
@@ -79,7 +84,7 @@ const Home: NextPage = () => {
           onMusicSelect={onMusicSelect}
         />
       </Container>
-    </>
+    </motion.article>
   )
 }
 

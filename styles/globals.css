@@ -1,50 +1,42 @@
-/*html,*/
-/*body {*/
-/*  padding: 0;*/
-/*  margin: 0;*/
-/*  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,*/
-/*    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;*/
-/*}*/
-
 a {
-  color: inherit;
-  text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 .hecla-input-left {
-  top: 2px !important;
+    top: 2px !important;
 }
 
 .hecla-container {
-  margin-top: 3em !important;
+    margin-top: 3em !important;
 }
 
 .hecla-segment .list {
-  height: 100% !important;
-  overflow: scroll !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
+    height: 100% !important;
+    overflow: scroll !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
 }
 
 .music-item {
-  width: 100%;
-  display: flex !important;
-  align-items: center !important;
-  cursor: pointer;
+    width: 100%;
+    display: flex !important;
+    align-items: center !important;
+    cursor: pointer;
 }
 
 .music-item.item img {
-  max-width: 64px;
-  max-height: 64px;
+    max-width: 64px;
+    max-height: 64px;
 }
 
 .music-item.item .content {
-  width: 75% !important;
+    width: 75% !important;
 }
 
 .music-item.item .content .header {
-  width: 95% !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    width: 95% !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
