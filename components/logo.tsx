@@ -28,6 +28,7 @@ const Logo = () => {
         <LogoBox>
           <Image src={logoImg} alt="logo" width="30" height="30" />
           <Text
+            display={['none', 'none', 'none', 'block']}
             color={useColorModeValue('gray.800', 'whiteAlpha.900')}
             fontFamily='"Gothic A1", sans-serif'
             fontWeight="light"

@@ -107,10 +107,10 @@ const Navbar = ({ ...props }: NavbarProps) => {
       <Container
         display="flex"
         p={2}
-        maxW="container.lg"
-        wrap="wrap"
-        align="center"
-        justify="space-between"
+        maxW="100%"
+        flexWrap="wrap"
+        alignItems="center"
+        justifyContent="space-between"
       >
         <Flex align="center" mr={5}>
           <Heading as="h1" size="lg" letterSpacing="tighter">
