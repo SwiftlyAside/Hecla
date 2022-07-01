@@ -18,28 +18,25 @@ import {
 import { GlobalContext } from './_app'
 import TrackObjectFull = SpotifyApi.TrackObjectFull
 import { motion } from 'framer-motion'
+import { getDevices, play } from '../lib/spotify'
 
 const Home: NextPage = () => {
   const { data: session } = useSession()
   const { searchResponse, setTrack } = useContext(GlobalContext)
   const { isOpen, onClose, onOpen } = useDisclosure()
 
-  const onMusicSelect = (track: TrackObjectFull) => {
+  const onMusicSelect = async (track: TrackObjectFull) => {
     if (!session) {
       onOpen()
       return
     }
+    console.log(await getDevices(`${session?.accessToken}`))
     if (setTrack) {
       setTrack(track)
     }
-    fetch('https://api.spotify.com/v1/me/player/play', {
-      method: 'put',
-      headers: {
-        Authorization: `Bearer ${session?.accessToken}`
-      },
-      body: JSON.stringify({
-        uris: [track.uri]
-      })
+    await play(`${session?.accessToken}`, {
+      context_uri: track.uri,
+      uris: [track.uri]
     })
   }
 

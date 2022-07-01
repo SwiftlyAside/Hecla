@@ -15,6 +15,8 @@ type GlobalContextProps = {
   setSearchResponse?: Dispatch<SetStateAction<SearchResponse | undefined>>
   track?: TrackObjectFull
   setTrack?: Dispatch<SetStateAction<TrackObjectFull | undefined>>
+  isPlaying?: boolean
+  setIsPlaying?: Dispatch<SetStateAction<boolean>>
 }
 
 export const GlobalContext = createContext<GlobalContextProps>({})
@@ -26,6 +28,7 @@ function Website({
 }: AppProps) {
   const [searchResponse, setSearchResponse] = useState<SearchResponse>()
   const [track, setTrack] = useState<TrackObjectFull>()
+  const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
   return (
     <GlobalContext.Provider
@@ -33,7 +36,9 @@ function Website({
         searchResponse: searchResponse,
         setSearchResponse: setSearchResponse,
         track: track,
-        setTrack: setTrack
+        setTrack: setTrack,
+        isPlaying: isPlaying,
+        setIsPlaying: setIsPlaying
       }}
     >
       <SessionProvider session={session}>
