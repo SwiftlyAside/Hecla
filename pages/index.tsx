@@ -18,7 +18,7 @@ import {
 import { GlobalContext } from './_app'
 import TrackObjectFull = SpotifyApi.TrackObjectFull
 import { motion } from 'framer-motion'
-import { getDevices, play } from '../lib/spotify'
+import { play } from '../lib/spotify'
 
 const Home: NextPage = () => {
   const { data: session } = useSession()
@@ -30,7 +30,7 @@ const Home: NextPage = () => {
       onOpen()
       return
     }
-    console.log(await getDevices(`${session?.accessToken}`))
+
     if (setTrack) {
       setTrack(track)
     }

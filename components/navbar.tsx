@@ -21,6 +21,7 @@ import useSWR from 'swr'
 import fetcher from '../lib/fetch'
 import { GlobalContext } from '../pages/_app'
 import ThemeToggleButton from './theme-toggle-button'
+import { useSearchResults } from '../lib/spotify'
 
 // type LinkItemProps = LinkProps & {
 //   href: string
@@ -66,19 +67,14 @@ const Navbar = ({ ...props }: NavbarProps) => {
   const debouncedSearch = useDebounce(search, 500)
 
   const { data: credentialToken } = useSWR(['/api/token', 'get'], fetcher)
-  const { data } = useSWR(
-    [
-      `https://api.spotify.com/v1/search?q=${debouncedSearch}&type=track`,
-      session ? session.accessToken : credentialToken?.access_token,
-      'get'
-    ],
-    fetcher,
-    {}
+  const { results } = useSearchResults(
+    session ? session.accessToken : credentialToken?.access_token,
+    debouncedSearch
   )
 
-  if (data && data.tracks) {
+  if (results && results.tracks) {
     if (setSearchResponse) {
-      setSearchResponse(data)
+      setSearchResponse(results)
     }
   }
 
