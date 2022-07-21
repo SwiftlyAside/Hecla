@@ -52,7 +52,7 @@ export default NextAuth({
       clientId: process.env.SPOTIFY_CLIENT_ID || '',
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET || '',
       authorization:
-        'https://accounts.spotify.com/authorize?scope=user-read-email%20app-remote-control%20streaming'
+        'https://accounts.spotify.com/authorize?scope=user-read-email%20app-remote-control%20streaming%20user-read-playback-state'
     })
   ],
   secret: process.env.SECRET,

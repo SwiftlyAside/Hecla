@@ -8,13 +8,15 @@ import Layout from '../components/layouts/main'
 import { AnimatePresence } from 'framer-motion'
 import React, { createContext, Dispatch, SetStateAction, useState } from 'react'
 import SearchResponse = SpotifyApi.SearchResponse
-import TrackObjectFull = SpotifyApi.TrackObjectFull
+import CurrentPlaybackResponse = SpotifyApi.CurrentPlaybackResponse
 
 type GlobalContextProps = {
   searchResponse?: SearchResponse
   setSearchResponse?: Dispatch<SetStateAction<SearchResponse | undefined>>
-  track?: TrackObjectFull
-  setTrack?: Dispatch<SetStateAction<TrackObjectFull | undefined>>
+  currentPlayback?: CurrentPlaybackResponse
+  setCurrentPlayback?: Dispatch<
+    SetStateAction<CurrentPlaybackResponse | undefined>
+  >
   isPlaying?: boolean
   setIsPlaying?: Dispatch<SetStateAction<boolean>>
 }
@@ -27,7 +29,8 @@ function Website({
   router
 }: AppProps) {
   const [searchResponse, setSearchResponse] = useState<SearchResponse>()
-  const [track, setTrack] = useState<TrackObjectFull>()
+  const [currentPlayback, setCurrentPlayback] =
+    useState<CurrentPlaybackResponse>()
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
   return (
@@ -35,8 +38,8 @@ function Website({
       value={{
         searchResponse: searchResponse,
         setSearchResponse: setSearchResponse,
-        track: track,
-        setTrack: setTrack,
+        currentPlayback: currentPlayback,
+        setCurrentPlayback: setCurrentPlayback,
         isPlaying: isPlaying,
         setIsPlaying: setIsPlaying
       }}

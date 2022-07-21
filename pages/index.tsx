@@ -16,13 +16,13 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 import { GlobalContext } from './_app'
-import TrackObjectFull = SpotifyApi.TrackObjectFull
 import { motion } from 'framer-motion'
 import { play } from '../lib/spotify'
+import TrackObjectFull = SpotifyApi.TrackObjectFull
 
 const Home: NextPage = () => {
   const { data: session } = useSession()
-  const { searchResponse, setTrack } = useContext(GlobalContext)
+  const { searchResponse } = useContext(GlobalContext)
   const { isOpen, onClose, onOpen } = useDisclosure()
 
   const onMusicSelect = async (track: TrackObjectFull) => {
@@ -31,11 +31,8 @@ const Home: NextPage = () => {
       return
     }
 
-    if (setTrack) {
-      setTrack(track)
-    }
     await play(`${session?.accessToken}`, {
-      context_uri: track.uri,
+      context_uri: track.album.uri,
       uris: [track.uri]
     })
   }

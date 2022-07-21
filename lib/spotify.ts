@@ -1,6 +1,8 @@
 import DeviceSpecificParameterObject = SpotifyApi.DeviceSpecificParameterObject
+import CurrentPlaybackResponse = SpotifyApi.CurrentPlaybackResponse
 import useSWR from 'swr'
 import fetcher from './fetch'
+import { useSession } from 'next-auth/react'
 
 export async function checkTracksStatus(
   token: string,
@@ -33,6 +35,11 @@ export function useDevices(token: string) {
     fetcher,
     { refreshInterval: 1000 }
   )
+  // the cat meows and looks at the screen, and you can't see the cat.
+  // but cat says at somewhere: "I'm here"
+  // I'm scared because I can't see the cat.
+  // And then suddenly appears and meows.
+  // now you can see the cat.
 
   return {
     devices: data,
@@ -52,6 +59,21 @@ export function useSearchResults(token: string, query: string) {
     results: data,
     isLoading: !error && !data,
     isError: error
+  }
+}
+
+export function usePlaybackState() {
+  const { data: session } = useSession()
+  const { data, error } = useSWR(
+    [`https://api.spotify.com/v1/me/player`, session?.accessToken, 'get'],
+    fetcher,
+    { refreshInterval: 1000 }
+  )
+
+  return {
+    playbackState: data as CurrentPlaybackResponse,
+    isLoading: !error && !data,
+    isError: error || (data && 'error' in data)
   }
 }
 
@@ -76,7 +98,9 @@ export async function play(
   }
 
   return fetch(
-    `https://api.spotify.com/v1/me/player/play?device_id=${device_id}`,
+    `https://api.spotify.com/v1/me/player/play${
+      device_id ? `?device_id=${device_id}` : ''
+    }`,
     {
       method: 'PUT',
       headers: {
