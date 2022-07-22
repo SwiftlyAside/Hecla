@@ -3,6 +3,9 @@ import CurrentPlaybackResponse = SpotifyApi.CurrentPlaybackResponse
 import useSWR from 'swr'
 import fetcher from './fetch'
 import { useSession } from 'next-auth/react'
+import SearchResponse = SpotifyApi.SearchResponse
+import SearchForItemParameterObject = SpotifyApi.SearchForItemParameterObject
+import UserDevicesResponse = SpotifyApi.UserDevicesResponse
 
 export async function checkTracksStatus(
   token: string,
@@ -30,16 +33,11 @@ export async function checkTracksStatus(
 // }
 
 export function useDevices(token: string) {
-  const { data, error } = useSWR(
+  const { data, error } = useSWR<UserDevicesResponse>(
     [`https://api.spotify.com/v1/me/player/devices`, token, 'get'],
     fetcher,
     { refreshInterval: 1000 }
   )
-  // the cat meows and looks at the screen, and you can't see the cat.
-  // but cat says at somewhere: "I'm here"
-  // I'm scared because I can't see the cat.
-  // And then suddenly appears and meows.
-  // now you can see the cat.
 
   return {
     devices: data,
@@ -48,9 +46,12 @@ export function useDevices(token: string) {
   }
 }
 
-export function useSearchResults(token: string, query: string) {
-  const { data, error } = useSWR(
-    [`https://api.spotify.com/v1/search?q=${query}&type=track`, token, 'get'],
+export function useSearchResults(
+  token: string,
+  { q, type }: SearchForItemParameterObject
+) {
+  const { data, error } = useSWR<SearchResponse>(
+    [`https://api.spotify.com/v1/search?q=${q}&type=${type}`, token, 'get'],
     fetcher,
     {}
   )
@@ -64,14 +65,14 @@ export function useSearchResults(token: string, query: string) {
 
 export function usePlaybackState() {
   const { data: session } = useSession()
-  const { data, error } = useSWR(
+  const { data, error } = useSWR<CurrentPlaybackResponse>(
     [`https://api.spotify.com/v1/me/player`, session?.accessToken, 'get'],
     fetcher,
     { refreshInterval: 1000 }
   )
 
   return {
-    playbackState: data as CurrentPlaybackResponse,
+    playbackState: data,
     isLoading: !error && !data,
     isError: error || (data && 'error' in data)
   }

@@ -69,7 +69,10 @@ const Navbar = ({ ...props }: NavbarProps) => {
   const { data: credentialToken } = useSWR(['/api/token', 'get'], fetcher)
   const { results } = useSearchResults(
     session ? session.accessToken : credentialToken?.access_token,
-    debouncedSearch
+    {
+      type: 'track',
+      q: debouncedSearch
+    }
   )
 
   if (results && results.tracks) {
