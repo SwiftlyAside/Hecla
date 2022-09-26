@@ -86,14 +86,15 @@ export async function play(
 
   if (context_uri) {
     const isArtist = context_uri.indexOf('artist') >= 0
-    let position
+    let offset_body
 
     /* istanbul ignore else */
     if (!isArtist) {
-      position = { position: offset }
+      offset_body =
+        typeof offset === 'number' ? { position: offset } : { uri: offset }
     }
 
-    body = JSON.stringify({ context_uri, offset: position })
+    body = JSON.stringify({ context_uri, offset: offset_body })
   } else if (Array.isArray(uris) && uris.length) {
     body = JSON.stringify({ uris, offset: { position: offset } })
   }

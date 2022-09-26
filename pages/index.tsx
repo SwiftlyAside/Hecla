@@ -33,6 +33,7 @@ const Home: NextPage = () => {
 
     await play(`${session?.accessToken}`, {
       context_uri: track.album.uri,
+      offset: track.uri,
       uris: [track.uri]
     })
   }

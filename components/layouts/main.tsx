@@ -26,13 +26,14 @@ const Layout = ({ children, router }: MainLayoutProps) => {
         <link rel="icon" href="/favicon.ico" />
         <meta name="author" content="Ilan Kim" />
         <title>
-          {currentItem &&
+          {`${
+            currentItem &&
             `${currentItem.name} By ${
               'artists' in currentItem
                 ? currentItem.artists[0].name
                 : currentItem.show.publisher
-            } : `}
-          Hecla
+            } : `
+          }Hecla`}
         </title>
       </Head>
       <Navbar path={router.asPath} terms={''} />

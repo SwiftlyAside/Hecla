@@ -23,11 +23,7 @@ type GlobalContextProps = {
 
 export const GlobalContext = createContext<GlobalContextProps>({})
 
-function Website({
-  Component,
-  pageProps: { session, ...pageProps },
-  router
-}: AppProps) {
+function Website({ Component, pageProps, router }: AppProps) {
   const [searchResponse, setSearchResponse] = useState<SearchResponse>()
   const [currentPlayback, setCurrentPlayback] =
     useState<CurrentPlaybackResponse>()
@@ -44,7 +40,7 @@ function Website({
         setIsPlaying: setIsPlaying
       }}
     >
-      <SessionProvider session={session}>
+      <SessionProvider>
         <ChakraProvider theme={theme}>
           <Fonts />
           <Layout router={router}>

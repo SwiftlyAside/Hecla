@@ -6,20 +6,28 @@ import {
   Text,
   useColorModeValue
 } from '@chakra-ui/react'
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import CurrentPlaybackResponse = SpotifyApi.CurrentPlaybackResponse
+import { FastAverageColor } from 'fast-average-color'
 
 interface MiniPlayerProps {
   playbackState?: CurrentPlaybackResponse
 }
 
 const MiniPlayer: React.FC<MiniPlayerProps> = ({ playbackState }) => {
+  const [averageColor, setAverageColor] = useState('#ffffff40')
+  const fac = new FastAverageColor()
   const currentItem = playbackState?.item
   const imageSrc =
     currentItem && 'album' in currentItem
       ? currentItem.album?.images[1].url
       : currentItem?.show.images[1].url
+
+  if (imageSrc) {
+    fac.getColorAsync(imageSrc).then(color => setAverageColor(`${color.hex}15`))
+  }
+
   const artists =
     currentItem && 'album' in currentItem
       ? currentItem?.artists.map(
@@ -31,7 +39,7 @@ const MiniPlayer: React.FC<MiniPlayerProps> = ({ playbackState }) => {
 
   const max = (playbackState?.item?.duration_ms ?? 1) / 1000
 
-  const backgroundColor = useColorModeValue('#ffffff40', '#20202380')
+  const backgroundColor = useColorModeValue(averageColor, '#20202380')
 
   return (
     <motion.div
@@ -51,18 +59,13 @@ const MiniPlayer: React.FC<MiniPlayerProps> = ({ playbackState }) => {
         className="mini-player"
       >
         <Stack direction="row" p={5}>
-          <Image
-            width={50}
-            height={50}
-            src={imageSrc}
-            alt={currentItem?.name}
-          />
+          <Image width={50} height={50} src={imageSrc} alt="thumbnail" />
           <Box className="mini-player-info">
             <Text>{currentItem?.name}</Text>
             <Text fontSize="sm">{artists}</Text>
           </Box>
         </Stack>
-        <Progress size="sm" max={max} value={progress} />
+        <Progress colorScheme="teal" size="sm" max={max} value={progress} />
       </Box>
     </motion.div>
   )
